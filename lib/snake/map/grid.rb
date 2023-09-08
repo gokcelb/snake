@@ -1,4 +1,5 @@
 require "./lib/snake/map/tile"
+require "./lib/snake/player"
 
 module Snake
   module Map
@@ -23,7 +24,13 @@ module Snake
         end
       end
 
+      def update_tile_representation(x, y, representation)
+        tile = find_tile(x, y)
+        tile.representation = representation
+      end
+
       def render
+        system("clear")
         @tiles.each { |t| print "#{t.representation}#{(t.x % @width == 0) ? "\n" : nil}" }
       end
 
