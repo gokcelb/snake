@@ -1,8 +1,9 @@
-require_relative "map/grid"
+require "./lib/snake/game"
 
 height = 30
 width = 90
 
-grid = Map::Grid.new(height, width)
-grid.create_borders("|", "-")
-grid.render
+game = Snake::Game.new
+game.create_map(height, width, with_visible_borders: true)
+game.add_player
+game.play
