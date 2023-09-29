@@ -1,5 +1,6 @@
 require "./lib/snake/map"
 require "./lib/snake/player"
+require "io/console"
 
 module Snake
   class Game
