@@ -13,6 +13,20 @@ module Snake
         @nodes = [Node.new(x, y, @horizontal_rep, @vertical_rep, Direction::RIGHT)]
       end
 
+      def grow
+        direction = head.direction
+        diff = coord_diff_by_direction(direction)
+        new_node = Node.new(
+          head.x + diff[0],
+          head.y + diff[1],
+          @horizontal_rep,
+          @vertical_rep,
+          direction,
+        )
+
+        @nodes.push(new_node)
+      end
+
       def move(direction)
         coord_diff = coord_diff_by_direction(direction)
         new_head = Node.new(
