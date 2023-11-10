@@ -29,26 +29,17 @@ module Snake
     end
 
     def add_player(x = @grid.width / 2, y = @grid.height / 2)
-      @player = Player.new(x, y)
-      @grid.update_tile_representation(x, y, @player.representation)
+      @player = Player::Snake.new(x, y, "-", "|")
+      @grid.update_tile_representation(x, y, @player.head.representation)
       @grid.render
     end
 
-    def move_player(direction, by = 1)
-      @grid.update_tile_representation(@player.x, @player.y, " ")
+    def move_player(direction)
+      @grid.update_tile_representation(@player.tail.x, @player.tail.y, " ")
 
-      case direction
-      when Direction::UP
-        @player.move_up(by)
-      when Direction::DOWN
-        @player.move_down(by)
-      when Direction::RIGHT
-        @player.move_right(by)
-      when Direction::LEFT
-        @player.move_left(by)
-      end
+      @player.move(direction)
 
-      @grid.update_tile_representation(@player.x, @player.y, @player.representation)
+      @grid.update_tile_representation(@player.head.x, @player.head.y, @player.head.representation)
       @grid.render
     end
   end
