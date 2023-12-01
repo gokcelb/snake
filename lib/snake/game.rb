@@ -34,6 +34,15 @@ module Snake
       @grid.render
     end
 
+    def add_food_to_random_position
+      x = Random.rand(1..@grid.width)
+      y = Random.rand(1..@grid.height)
+      food_representation = "*"
+
+      @grid.update_tile_representation(x, y, food_representation)
+      @grid.render
+    end
+
     def move_player(direction)
       @grid.update_tile_representation(@player.tail.x, @player.tail.y, " ")
 
