@@ -23,33 +23,33 @@ module Snake
     end
 
     def create_map(height, width, with_visible_borders: false)
-      @grid = Map::Grid.new(height, width)
-      @grid.create_borders("|", "-") if with_visible_borders
-      @grid.render
+      @map = Map.new(height, width)
+      @map.create_borders("|", "-") if with_visible_borders
+      @map.render
     end
 
-    def add_player(x = @grid.width / 2, y = @grid.height / 2)
+    def add_player(x = @map.width / 2, y = @map.height / 2)
       @player = Player::Snake.new(x, y, "-", "|")
-      @grid.update_tile_representation(x, y, @player.head.representation)
-      @grid.render
+      @map.update_tile_representation(x, y, @player.head.representation)
+      @map.render
     end
 
     def add_food_to_random_position
-      x = Random.rand(1..@grid.width)
-      y = Random.rand(1..@grid.height)
+      x = Random.rand(1..@map.width)
+      y = Random.rand(1..@map.height)
       food_representation = "*"
 
-      @grid.update_tile_representation(x, y, food_representation)
-      @grid.render
+      @map.update_tile_representation(x, y, food_representation)
+      @map.render
     end
 
     def move_player(direction)
-      @grid.update_tile_representation(@player.tail.x, @player.tail.y, " ")
+      @map.update_tile_representation(@player.tail.x, @player.tail.y, " ")
 
       @player.move(direction)
 
-      @grid.update_tile_representation(@player.head.x, @player.head.y, @player.head.representation)
-      @grid.render
+      @map.update_tile_representation(@player.head.x, @player.head.y, @player.head.representation)
+      @map.render
     end
   end
 end

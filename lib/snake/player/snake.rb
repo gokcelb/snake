@@ -21,7 +21,7 @@ module Snake
           head.y + diff[1],
           @horizontal_rep,
           @vertical_rep,
-          direction,
+          direction
         )
 
         @nodes.push(new_node)
@@ -62,7 +62,7 @@ module Snake
         when Direction::LEFT
           [-1, 0]
         else
-          [0 , 0]
+          [0, 0]
         end
       end
     end
