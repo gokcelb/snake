@@ -9,13 +9,13 @@ module Snake
         player_input = $stdin.getch
         case player_input
         when "w"
-          move_snake_up
+          move_snake(Direction::UP)
         when "a"
-          move_snake_left
+          move_snake(Direction::LEFT)
         when "s"
-          move_snake_down
+          move_snake(Direction::DOWN)
         when "d"
-          move_snake_right
+          move_snake(Direction::RIGHT)
         when "q"
           break
         end
@@ -27,20 +27,13 @@ module Snake
       @map.create_borders("|", "-") if with_visible_borders
     end
 
-    def move_snake_right
-      move_object(@snake.head, Direction::RIGHT)
-    end
-
-    def move_snake_left
-      move_object(@snake.head, Direction::LEFT)
-    end
-
-    def move_snake_up
-      move_object(@snake.head, Direction::UP)
-    end
-
-    def move_snake_down
-      move_object(@snake.head, Direction::DOWN)
+    def move_snake(headed_direction)
+      new_directions = []
+      @snake.nodes.each_with_index do |node, i|
+        direction = (i == 0) ? headed_direction : @snake.nodes[i - 1].direction
+        new_directions << direction
+      end
+      @snake.nodes.each_with_index { |node, i| move_object(node, new_directions[i]) }
     end
 
     def move_object(object, direction)
