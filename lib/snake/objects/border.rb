@@ -1,13 +1,11 @@
 require "./lib/snake/objects/types"
+require "./lib/snake/objects/object"
 
 module Snake
   module Objects
-    class Border
-      attr_reader :visual, :type
-
+    class Border < Object
       def initialize(direction)
-        @visual = direction == 'horizontal' ? "-" : "|"
-        @type = Types::BORDER
+        super(Types::BORDER, (direction == "horizontal") ? "-" : "|")
       end
     end
   end

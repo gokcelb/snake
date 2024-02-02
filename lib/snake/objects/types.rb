@@ -3,6 +3,7 @@ module Snake
     module Types
       BORDER = "border"
       FOOD = "food"
+      SNAKE = "snake"
     end
   end
 end

@@ -1,13 +1,11 @@
 require "./lib/snake/objects/types"
+require "./lib/snake/objects/object"
 
 module Snake
   module Objects
-    class Food
-      attr_reader :visual, :type
-
+    class Food < Object
       def initialize
-        @visual = "*"
-        @type = Types::FOOD
+        super(Types::FOOD, "*")
       end
     end
   end
