@@ -14,6 +14,10 @@ module Snake
       def head
         nodes.first
       end
+
+      def grow
+        @nodes.unshift(SnakeNode.new(head.direction))
+      end
     end
 
     class SnakeNode < Object

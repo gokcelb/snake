@@ -36,6 +36,10 @@ module Snake
       end
     end
 
+    def detect_collision(index)
+      @objects[index].type unless @objects[index].nil?
+    end
+
     def update(index, object, direction = nil)
       render do
         raise CollisionError.new(@objects[index].type) unless @objects[index].nil?
@@ -46,12 +50,22 @@ module Snake
       end
     end
 
-    def clear(object)
+    def clear(index)
       render do
-        @objects[object.position] = nil
+        object = @objects[index]
         object.position = nil
+        @objects[index] = nil
       end
     end
+
+    def new_index_from(headed_direction, current_index)
+      delta_from(headed_direction) => {horizontal_delta:, vertical_delta:}
+      new_column = column_number_from(current_index) + horizontal_delta
+      new_row = row_number_from(current_index) + vertical_delta
+      index_from(new_row, new_column)
+    end
+
+    private
 
     def row_number_from(index)
       (index / width) + 1
@@ -79,8 +93,6 @@ module Snake
         {horizontal_delta: 0, vertical_delta: 0}
       end
     end
-
-    private
 
     def on_horizontal_edge?(index)
       index.between?(0, @width - 1) || index.between?(@width * (@height - 1), @width * @height - 1)

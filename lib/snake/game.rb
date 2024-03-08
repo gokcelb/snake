@@ -9,13 +9,13 @@ module Snake
         player_input = $stdin.getch
         case player_input
         when "w"
-          move_snake(Direction::UP)
+          handle_move_snake(Direction::UP)
         when "a"
-          move_snake(Direction::LEFT)
+          handle_move_snake(Direction::LEFT)
         when "s"
-          move_snake(Direction::DOWN)
+          handle_move_snake(Direction::DOWN)
         when "d"
-          move_snake(Direction::RIGHT)
+          handle_move_snake(Direction::RIGHT)
         when "q"
           break
         end
@@ -25,6 +25,23 @@ module Snake
     def create_map(height, width, with_visible_borders: false)
       @map = Map.new(height, width)
       @map.create_borders("|", "-") if with_visible_borders
+    end
+
+    def handle_move_snake(headed_direction)
+      new_index = @map.new_index_from(headed_direction, @snake.head.position)
+      collided_object_type = @map.detect_collision(new_index)
+
+      if collided_object_type.nil?
+        return move_snake(headed_direction)
+      end
+
+      if collided_object_type != Objects::Types::FOOD
+        raise 'collided object other than food'
+      end
+
+      @map.clear(new_index)
+      @snake.grow
+      @map.update(new_index, @snake.head, headed_direction)
     end
 
     def move_snake(headed_direction)
@@ -37,13 +54,8 @@ module Snake
     end
 
     def move_object(object, direction)
-      @map.delta_from(direction) => {horizontal_delta:, vertical_delta:}
-
-      column = @map.column_number_from(object.position) + horizontal_delta
-      new_row = @map.row_number_from(object.position) + vertical_delta
-      new_index = @map.index_from(new_row, column)
-
-      @map.clear(object)
+      new_index = @map.new_index_from(direction, object.position)
+      @map.clear(object.position)
       @map.update(new_index, object, direction)
     end
 
