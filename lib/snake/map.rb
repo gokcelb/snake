@@ -65,6 +65,10 @@ module Snake
       index_from(new_row, new_column)
     end
 
+    def random_position
+      Random.rand(1..width * height)
+    end
+
     private
 
     def row_number_from(index)
