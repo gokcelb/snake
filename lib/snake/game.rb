@@ -1,11 +1,13 @@
 require "./lib/snake/map"
 require "io/console"
 require "./lib/snake/direction"
+require "./lib/snake/spawner"
 
 module Snake
   class Game
     def play
       loop do
+        @food_spawner.spawn
         player_input = $stdin.getch
         case player_input
         when "w"
@@ -25,6 +27,11 @@ module Snake
     def create_map(height, width, with_visible_borders: false)
       @map = Map.new(height, width)
       @map.create_borders("|", "-") if with_visible_borders
+      @map
+    end
+
+    def create_food_spawner
+      @food_spawner = Snake::Spawner.new(@map, Snake::Objects::Food)
     end
 
     def handle_move_snake(headed_direction)
@@ -62,36 +69,13 @@ module Snake
     def add_snake
       @snake = Objects::Snake.new
       object = @snake.head
-      index = Random.rand(1..@map.width * @map.height)
-      updated = false
-
-      until updated
-        begin
-          @map.update(index, object)
-          updated = true
-        rescue Map::CollisionError => exception
-          if exception.object_type == Objects::Types::BORDER
-            index = Random.rand(1..@map.width * @map.height)
-          end
-        end
+      index = @map.random_position
+      collided_object_type = @map.detect_collision(index)
+      until collided_object_type.nil? do
+        index = @map.random_position
+        collided_object_type = @map.detect_collision(index)
       end
-    end
-
-    def add_food
-      object = Objects::Food.new
-      index = Random.rand(1..@map.width * @map.height)
-      updated = false
-
-      until updated
-        begin
-          @map.update(index, object)
-          updated = true
-        rescue Map::CollisionError => exception
-          if exception.object_type == Objects::Types::BORDER
-            index = Random.rand(1..@map.width * @map.height)
-          end
-        end
-      end
+      @map.update(index, object)
     end
   end
 end
